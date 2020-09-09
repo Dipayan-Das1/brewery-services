@@ -2,14 +2,19 @@ package edu.spring.brewery.service.impl;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.spring.brewery.mapper.BeerMapper;
 import edu.spring.brewery.model.dto.BeerDto;
 import edu.spring.brewery.model.dto.BeerStyle;
 import edu.spring.brewery.service.BeerService;
 
 @Service
 public class BeerServiceImpl implements BeerService {
+	
+	@Autowired
+	private BeerMapper beerMapper;
 
 	@Override
 	public BeerDto getBeerById(UUID id) {

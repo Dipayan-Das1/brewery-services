@@ -29,7 +29,7 @@ import lombok.Setter;
 @Builder
 public class Beer {
 	@Version
-	private Long version;
+	private Integer version;
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
