@@ -1,20 +1,17 @@
 package edu.spring.brewery.controller;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,17 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.spring.brewery.model.dto.BeerDto;
 import edu.spring.brewery.service.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/beer")
 @Slf4j
-@AllArgsConstructor
 @Validated
 public class BeerServiceController {
 	
-	
+	@Autowired
 	private BeerService beerService;
 
 	@GetMapping(path = { "/{beerId}" }, produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -48,7 +43,7 @@ public class BeerServiceController {
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<BeerDto> createBeer(@RequestBody @Valid BeerDto beer) {
 		log.debug("Create beer");
-		beerService.createBeer(beer);
+		beer = beerService.createBeer(beer);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("location", "/api/v1/beer/"+beer.getId());
 		return new ResponseEntity<BeerDto>(beer, headers, HttpStatus.CREATED);
@@ -57,8 +52,9 @@ public class BeerServiceController {
 	@PutMapping(path= {"/{beerId}"},consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity updateBeer(@RequestBody @Valid BeerDto beer, @PathVariable UUID beerId) {
 		log.debug("Update beer {}",beerId);
+		beer.setId(beerId);
 		beerService.updateBeer(beer);
-		return new ResponseEntity<BeerDto>(beer, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<BeerDto>(HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping(path= {"/{beerId}"},produces = { MediaType.APPLICATION_JSON_VALUE })

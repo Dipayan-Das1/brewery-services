@@ -9,6 +9,8 @@ import javax.validation.constraints.Null;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerDto {
 	@Null
+	@JsonProperty("customerId")
 	private UUID id;
 	@NotBlank
 	@Length(min = 3,max=100)
